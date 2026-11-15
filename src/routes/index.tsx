@@ -108,7 +108,7 @@ function Overview() {
           <SectionHeading eyebrow="01 — Project" title="Overview" />
         </div>
         <div className="reveal flex flex-col gap-10 lg:col-span-7">
-          <p className="display text-2xl leading-snug md:text-3xl">{project.overview}</p>
+          <p className="display text-xl leading-relaxed md:text-[1.65rem] md:leading-[1.45]">{project.overview}</p>
           <div>
             <p className="eyebrow mb-5">Technologies Used</p>
             <ul className="flex flex-wrap gap-3">
@@ -169,7 +169,7 @@ function UserExperience() {
                 className="reveal grid gap-6 border-t border-border py-10 md:grid-cols-2 md:gap-16"
               >
                 <div className="flex gap-6">
-                  <span className="display text-2xl text-muted-foreground">0{i + 1}</span>
+                  <span className="display w-10 shrink-0 text-2xl text-muted-foreground">0{i + 1}</span>
                   <div>
                     <h4 className="text-lg font-medium">{p.problem}</h4>
                     <p className="mt-2 leading-relaxed text-muted-foreground">{p.problemBody}</p>
