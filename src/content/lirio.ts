@@ -48,7 +48,7 @@ export const project = {
     { label: "Services", value: "UI/UX · Web Development" },
     { label: "Date", value: "2024–2025" },
     { label: "Website", value: "thelirio.com", href: "https://thelirio.com/" },
-  ],
+  ] as const,
   tools: [
     { name: "Figma", icon: figma.url },
     { name: "WordPress", icon: wordpress.url },
