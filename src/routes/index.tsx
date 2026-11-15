@@ -176,6 +176,9 @@ function Overview() {
             <Pill>UI/UX</Pill>
             <Pill>Web Development</Pill>
           </Glance>
+          <Glance label="Year">
+            <Pill>2024–2025</Pill>
+          </Glance>
           <Glance label="Stack">
             {project.stack.map((s) => (
               <Pill key={s}>{s}</Pill>

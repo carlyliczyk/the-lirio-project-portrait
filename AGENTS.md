@@ -32,3 +32,5 @@ use the editor.
 ## Project rules
 - Case study copy and image references live in `src/content/` data modules; route files only compose sections — keeps content edits separate from layout.
 - Downloaded images are stored as Lovable CDN asset pointers (`src/assets/**/*.asset.json`) and referenced via their `.url` — avoids committing large binaries.
+- All font sizes come from the named type-scale tokens in `src/styles.css` (`text-caption` … `text-display`); never use Tailwind's default `text-sm/lg/xl…` — keeps every size on one modular scale.
+- Metadata labels use the `Pill` component (`src/components/case-study/Pill.tsx`) and content groups use the `.module` card classes — one consistent card + pill system across sections.
