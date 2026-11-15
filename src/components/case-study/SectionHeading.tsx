@@ -8,7 +8,9 @@ export function SectionHeading({
   title,
   children,
   inverse = false,
+  id,
 }: {
+  id?: string;
   index?: string;
   eyebrow: string;
   title: string;
@@ -22,7 +24,7 @@ export function SectionHeading({
           {index ? <Pill variant="accent">{index}</Pill> : null}
           <Pill variant={inverse ? "inverse" : "default"}>{eyebrow}</Pill>
         </div>
-        <h2 className="headline text-heading">{title}</h2>
+        <h2 id={id} className="headline text-heading">{title}</h2>
       </div>
       {children ? (
         <div

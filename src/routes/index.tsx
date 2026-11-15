@@ -144,7 +144,7 @@ function Fact({ label, children }: { label: string; children: React.ReactNode })
 function Overview() {
   return (
     <section id="overview" aria-labelledby="overview-title" className={`${container} py-24 md:py-32`}>
-      <SectionHeading index="01" eyebrow="Overview" title="Project Overview" />
+      <SectionHeading id="overview-title" index="01" eyebrow="Overview" title="Project Overview" />
 
       <div className="mt-12 grid gap-3 lg:grid-cols-12">
         <article className="module reveal flex flex-col gap-6 p-7 md:p-10 lg:col-span-8">
@@ -223,7 +223,7 @@ function Process() {
   return (
     <section id="process" aria-labelledby="process-title" className="border-y border-border bg-card">
       <div className={`${container} py-24 md:py-32`}>
-        <SectionHeading index="02" eyebrow="Process" title="Design Process">
+        <SectionHeading id="process-title" index="02" eyebrow="Process" title="Design Process">
           {processCopy}
         </SectionHeading>
 
@@ -336,7 +336,7 @@ function Process() {
 function Details() {
   return (
     <section id="details" aria-labelledby="details-title" className={`${container} py-24 md:py-32`}>
-      <SectionHeading index="03" eyebrow="Details" title="Design System">
+      <SectionHeading id="details-title" index="03" eyebrow="Details" title="Design System">
         {styles.intro}
       </SectionHeading>
 
@@ -434,7 +434,7 @@ function VisualDesign() {
   return (
     <section aria-labelledby="visual-title" className="bg-inverse py-24 text-inverse-foreground md:py-32">
       <div className={container}>
-        <SectionHeading inverse eyebrow="Visual design" title="Key screens">
+        <SectionHeading id="visual-title" inverse eyebrow="Visual design" title="Key screens">
           Five core templates designed and built for the new store, from first impression to checkout.
         </SectionHeading>
         <div className="module-inverse reveal mt-12 overflow-hidden p-2">
@@ -493,7 +493,7 @@ function VisualDesign() {
 function Results() {
   return (
     <section id="results" aria-labelledby="results-title" className={`${container} py-24 md:py-32`}>
-      <SectionHeading index="04" eyebrow="Results" title="Outcome">
+      <SectionHeading id="results-title" index="04" eyebrow="Results" title="Outcome">
         {results.statement}
       </SectionHeading>
 
