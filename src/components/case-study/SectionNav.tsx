@@ -21,7 +21,7 @@ export function SectionNav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-10">
         <a href="#top" className="display text-lg tracking-[0.2em] uppercase">
           Carly Liczyk
