@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Case study copy and image references live in `src/content/` data modules; route files only compose sections — keeps content edits separate from layout.
+- Downloaded images are stored as Lovable CDN asset pointers (`src/assets/**/*.asset.json`) and referenced via their `.url` — avoids committing large binaries.
