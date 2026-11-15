@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionNav } from "@/components/case-study/SectionNav";
-import { SectionHeading } from "@/components/case-study/SectionHeading";
+import { GroupHeading, SectionHeading } from "@/components/case-study/SectionHeading";
 import { ScreenFrame } from "@/components/case-study/ScreenFrame";
 import { ScoreTable } from "@/components/case-study/ScoreTable";
+import { Pill } from "@/components/case-study/Pill";
 import {
   competitive,
   empathy,
@@ -10,6 +11,7 @@ import {
   problemsSolutions,
   processCopy,
   project,
+  results,
   scope,
   screens,
   styles,
@@ -38,102 +40,163 @@ export const Route = createFileRoute("/")({
   component: CaseStudy,
 });
 
+const container = "mx-auto max-w-[1240px] px-5 md:px-8";
+
 function CaseStudy() {
   return (
     <div id="top" className="min-h-screen bg-background text-foreground">
       <SectionNav />
-      <Hero />
-      <Overview />
-      <UserExperience />
-      <DesignSystem />
-      <VisualDesign />
-      <Closing />
+      <main>
+        <Hero />
+        <Overview />
+        <Process />
+        <Details />
+        <VisualDesign />
+        <Results />
+      </main>
+      <Footer />
     </div>
   );
 }
 
+/* ------------------------------------------------------------------ Hero */
+
 function Hero() {
+  const [client, services, date, website] = project.meta;
   return (
-    <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 pt-16 pb-12 md:px-10 md:pt-24">
-        <div className="rise-in flex flex-col items-center text-center">
-          <img src={images.logo} alt="" aria-hidden className="mb-6 size-20 md:size-24" />
-          <p className="eyebrow">Case Study · eCommerce Redesign</p>
-          <h1 className="display mt-6 text-6xl uppercase tracking-[0.06em] sm:text-7xl md:text-[8.5rem]">
-            The Lirio
-          </h1>
-          <span className="gold-rule mt-8" />
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-            {project.intro}
-          </p>
+    <section aria-labelledby="hero-title" className="relative">
+      <div aria-hidden className="grid-paper absolute inset-x-0 top-0 h-[520px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+      <div className={`${container} relative pt-16 pb-10 md:pt-24`}>
+        <div className="rise-in flex flex-wrap items-center gap-2">
+          {project.tags.map((t, i) => (
+            <Pill key={t} variant={i === 0 ? "solid" : "default"} dot={i === 0}>
+              {t}
+            </Pill>
+          ))}
+          <Pill>{date.value}</Pill>
         </div>
 
-        <dl className="rise-in mt-16 grid grid-cols-2 border-y border-border md:grid-cols-4">
-          {project.meta.map((m) => (
-            <div
-              key={m.label}
-              className="flex flex-col gap-2 border-border px-2 py-6 odd:border-r md:border-r md:px-6 md:last:border-r-0"
-            >
-              <dt className="eyebrow">{m.label}</dt>
-              <dd className="display text-xl md:text-2xl">
-                {m.href ? (
-                  <a href={m.href} target="_blank" rel="noreferrer" className="link-underline">
-                    {m.value}
-                  </a>
-                ) : (
-                  m.value
-                )}
-              </dd>
+        <div className="rise-in mt-8 grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h1 id="hero-title" className="headline text-display lg:col-span-7">
+            The Lirio
+            <span className="block text-muted-foreground">eCommerce redesign</span>
+          </h1>
+          <p className="text-lead text-muted-foreground lg:col-span-5">{project.intro}</p>
+        </div>
+
+        {/* Key facts */}
+        <dl className="rise-in mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Fact label={client.label}>
+            <span className="text-subheading font-medium tracking-tight">{client.value}</span>
+          </Fact>
+          <Fact label={services.label}>
+            <div className="flex flex-wrap gap-1.5">
+              <Pill>UI/UX Design</Pill>
+              <Pill>Web Development</Pill>
             </div>
-          ))}
+          </Fact>
+          <Fact label={date.label}>
+            <span className="text-subheading font-medium tracking-tight tabular-nums">{date.value}</span>
+          </Fact>
+          <Fact label={website.label}>
+            <a
+              href={website.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex items-center gap-2 text-subheading font-medium tracking-tight"
+            >
+              {website.value}
+              <span
+                aria-hidden
+                className="grid size-7 place-items-center rounded-full bg-accent text-caption text-accent-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              >
+                ↗
+              </span>
+            </a>
+          </Fact>
         </dl>
       </div>
 
-      <div className="rise-in mx-auto max-w-[1600px] px-4 md:px-10">
-        <img
-          src={images.banner}
-          alt="The Lirio mobile site shown across a grid of phones"
-          className="w-full rounded-lg object-cover shadow-[var(--shadow-frame)]"
-        />
+      <div className={`${container} rise-in`}>
+        <div className="module overflow-hidden p-2">
+          <img
+            src={images.banner}
+            alt="The Lirio mobile site shown across a grid of phones"
+            className="w-full rounded-xl object-cover"
+          />
+        </div>
       </div>
     </section>
   );
 }
 
+function Fact({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="module flex min-h-32 flex-col justify-between gap-6 p-5">
+      <dt className="eyebrow">{label}</dt>
+      <dd>{children}</dd>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------- Overview */
+
 function Overview() {
   return (
-    <section id="overview" className="mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-36">
-      <div className="grid gap-16 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <SectionHeading eyebrow="01 — Project" title="Overview" />
-        </div>
-        <div className="reveal flex flex-col gap-10 lg:col-span-7">
-          <p className="display text-xl leading-relaxed md:text-[1.65rem] md:leading-[1.45]">{project.overview}</p>
-          <div>
-            <p className="eyebrow mb-5">Technologies Used</p>
-            <ul className="flex flex-wrap gap-3">
-              {project.tools.map((t) => (
-                <li
-                  key={t.name}
-                  className="flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm"
-                >
-                  <img src={t.icon} alt="" aria-hidden className="h-5 w-5 object-contain" />
-                  {t.name}
-                </li>
-              ))}
-            </ul>
+    <section id="overview" aria-labelledby="overview-title" className={`${container} py-24 md:py-32`}>
+      <SectionHeading index="01" eyebrow="Overview" title="Project Overview" />
+
+      <div className="mt-12 grid gap-3 lg:grid-cols-12">
+        <article className="module reveal flex flex-col gap-6 p-7 md:p-10 lg:col-span-8">
+          <div className="flex flex-wrap gap-2">
+            <Pill variant="accent">Brief</Pill>
+            <Pill>Redesign</Pill>
           </div>
-        </div>
+          <p className="text-lead text-foreground">{project.overview}</p>
+        </article>
+
+        <aside className="module reveal flex flex-col gap-6 p-7 lg:col-span-4" aria-label="Project at a glance">
+          <p className="eyebrow">At a glance</p>
+          <Glance label="Category">
+            <Pill>eCommerce</Pill>
+            <Pill>Luxury Jewelry</Pill>
+          </Glance>
+          <Glance label="Role">
+            <Pill>UI/UX</Pill>
+            <Pill>Web Development</Pill>
+          </Glance>
+          <Glance label="Stack">
+            {project.stack.map((s) => (
+              <Pill key={s}>{s}</Pill>
+            ))}
+          </Glance>
+          <Glance label="Tools">
+            {project.tools.map((t) => (
+              <Pill key={t.name}>
+                <img src={t.icon} alt="" aria-hidden className="size-4 object-contain" />
+                {t.name}
+              </Pill>
+            ))}
+          </Glance>
+        </aside>
       </div>
 
-      <div className="mt-28">
-        <p className="eyebrow reveal mb-10">Scope of Work</p>
-        <ol className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-20">
+        <GroupHeading label="Scope of work" title="Eight workstreams, discovery to launch" />
+        <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {scope.map((s, i) => (
-            <li key={s.title} className="reveal group flex flex-col gap-4 bg-background p-7 transition-colors hover:bg-card">
-              <span className="display text-3xl text-gold">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="text-base font-medium">{s.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+            <li
+              key={s.title}
+              className="module reveal group flex flex-col gap-4 p-6 transition-shadow hover:shadow-[var(--shadow-lift)]"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-caption text-muted-foreground">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <Pill>{s.phase}</Pill>
+              </div>
+              <h4 className="text-body font-semibold tracking-tight">{s.title}</h4>
+              <p className="text-caption text-muted-foreground">{s.body}</p>
             </li>
           ))}
         </ol>
@@ -142,106 +205,116 @@ function Overview() {
   );
 }
 
-function UserExperience() {
+function Glance({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <section id="ux" className="bg-card py-28 md:py-36">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <SectionHeading eyebrow="02 — UX" title="Design Process" align="center">
+    <div className="flex flex-col gap-2.5 border-t border-border pt-4">
+      <span className="text-caption font-medium">{label}</span>
+      <div className="flex flex-wrap gap-1.5">{children}</div>
+    </div>
+  );
+}
+
+/* --------------------------------------------------------------- Process */
+
+function Process() {
+  return (
+    <section id="process" aria-labelledby="process-title" className="border-y border-border bg-card">
+      <div className={`${container} py-24 md:py-32`}>
+        <SectionHeading index="02" eyebrow="Process" title="Design Process">
           {processCopy}
         </SectionHeading>
-        <img
-          src={images.process}
-          alt="Design process from discovery through design to delivery"
-          loading="lazy"
-          className="reveal mx-auto mt-16 w-full max-w-5xl"
-        />
+
+        <div className="module reveal mt-12 bg-background p-6 md:p-12">
+          <img
+            src={images.process}
+            alt="Design process from discovery through design to delivery"
+            loading="lazy"
+            className="mx-auto w-full max-w-5xl"
+          />
+        </div>
 
         {/* Problems → Solutions */}
-        <div className="mt-32">
-          <div className="reveal mb-12 grid gap-6 md:grid-cols-2">
-            <h3 className="display text-3xl uppercase md:text-4xl">Pain Points</h3>
-            <h3 className="display hidden text-3xl uppercase md:block md:text-4xl">Solutions</h3>
-          </div>
-          <div className="flex flex-col">
+        <div className="mt-20">
+          <GroupHeading label="Research findings" title="Pain points and solutions" />
+          <div className="mt-8 grid gap-3 md:grid-cols-2">
             {problemsSolutions.map((p, i) => (
-              <div
-                key={p.problem}
-                className="reveal grid gap-6 border-t border-border py-10 md:grid-cols-2 md:gap-16"
-              >
-                <div className="flex gap-6">
-                  <span className="display w-10 shrink-0 text-2xl text-muted-foreground">0{i + 1}</span>
-                  <div>
-                    <h4 className="text-lg font-medium">{p.problem}</h4>
-                    <p className="mt-2 leading-relaxed text-muted-foreground">{p.problemBody}</p>
-                  </div>
+              <article key={p.problem} className="module reveal flex flex-col overflow-hidden bg-background">
+                <div className="flex flex-col gap-3 p-6 md:p-7">
+                  <Pill className="self-start">Problem {String(i + 1).padStart(2, "0")}</Pill>
+                  <h4 className="text-body font-semibold tracking-tight">{p.problem}</h4>
+                  <p className="text-caption text-muted-foreground">{p.problemBody}</p>
                 </div>
-                <div className="relative flex gap-6 md:pl-10">
-                  <span aria-hidden className="hidden text-gold md:absolute md:-left-6 md:top-0 md:block">
-                    →
-                  </span>
-                  <span className="eyebrow pt-1.5 md:hidden">Solution</span>
-                  <div>
-                    <h4 className="display text-2xl">{p.solution}</h4>
-                    <p className="mt-2 leading-relaxed text-muted-foreground">{p.solutionBody}</p>
-                  </div>
+                <div className="mt-auto flex flex-col gap-3 border-t border-border bg-card p-6 md:p-7">
+                  <Pill variant="accent" className="self-start">
+                    Solution →
+                  </Pill>
+                  <h4 className="text-subheading font-semibold tracking-tight">{p.solution}</h4>
+                  <p className="text-caption text-muted-foreground">{p.solutionBody}</p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
 
         {/* Competitive analysis */}
-        <div className="mt-32 grid gap-16 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <SectionHeading eyebrow="Research" title="Competitive Analysis" />
-            <div className="reveal mt-8">
-              <p className="eyebrow mb-3">Brands analyzed</p>
-              <div className="flex flex-wrap gap-2">
+        <div className="mt-20">
+          <GroupHeading label="Research" title="Competitive analysis" />
+          <div className="mt-8 grid gap-3 lg:grid-cols-12">
+            <article className="module reveal flex flex-col gap-5 bg-background p-7 lg:col-span-7">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="eyebrow mr-1">Brands analyzed</span>
                 {competitive.brands.map((b) => (
-                  <span key={b} className="display rounded-full border border-border px-4 py-1.5 text-lg">
-                    {b}
-                  </span>
+                  <Pill key={b}>{b}</Pill>
                 ))}
               </div>
+              {competitive.findings.slice(0, 2).map((f) => (
+                <p key={f} className="text-muted-foreground">
+                  {f}
+                </p>
+              ))}
+            </article>
+            <article className="module-inverse reveal flex flex-col gap-5 p-7 text-inverse-foreground lg:col-span-5">
+              <Pill variant="accent" className="self-start">
+                Opportunity
+              </Pill>
+              <p className="text-lead">{competitive.findings[2]}</p>
+            </article>
+            <div className="module reveal overflow-hidden bg-background lg:col-span-12">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
+                <span className="text-body font-semibold tracking-tight">Feature scorecard</span>
+                <Pill>Scored out of 10</Pill>
+              </div>
+              <ScoreTable />
             </div>
           </div>
-          <div className="reveal flex flex-col gap-5 leading-relaxed text-muted-foreground lg:col-span-8">
-            {competitive.findings.map((f, i) => (
-              <p key={i} className={i === 2 ? "border-l-2 border-gold pl-5 text-foreground" : ""}>
-                {f}
-              </p>
-            ))}
-          </div>
-        </div>
-        <div className="mt-12">
-          <ScoreTable />
-          <p className="mt-3 text-xs text-muted-foreground">Scored out of 10.</p>
         </div>
 
         {/* Empathy map */}
-        <div className="mt-32">
-          <SectionHeading eyebrow="Research" title="Empathy Map" align="center" />
-          <div className="mt-14 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-2">
+        <div className="mt-20">
+          <GroupHeading label="Research" title="Empathy map" />
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {empathy.map((q) => (
-              <div key={q.title} className="reveal bg-background p-8 md:p-10">
-                <h4 className="display text-3xl">{q.title}</h4>
-                <span className="gold-rule mt-4" />
-                <ul className="mt-6 flex flex-col gap-4">
+              <article key={q.title} className="module reveal flex flex-col gap-5 bg-background p-6">
+                <Pill variant="solid" className="self-start">
+                  {q.title}
+                </Pill>
+                <ul className="flex flex-col gap-4">
                   {q.items.map((it) => (
-                    <li key={it} className="leading-relaxed text-muted-foreground">
+                    <li key={it} className="flex gap-3 text-caption text-muted-foreground">
+                      <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-foreground" />
                       {it}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </article>
             ))}
           </div>
         </div>
 
         {/* Sitemap */}
-        <div className="mt-32">
-          <SectionHeading eyebrow="Architecture" title="Site Map" align="center" />
-          <div className="reveal frame mt-14 rounded-lg p-4 md:p-10">
+        <div className="mt-20">
+          <GroupHeading label="Information architecture" title="Site map" />
+          <div className="module reveal mt-8 bg-background p-4 md:p-10">
             <img
               src={images.sitemap}
               alt="Site map of The Lirio showing every page and section"
@@ -255,68 +328,96 @@ function UserExperience() {
   );
 }
 
-function DesignSystem() {
+/* --------------------------------------------------------------- Details */
+
+function Details() {
   return (
-    <section id="system" className="mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-36">
-      <SectionHeading eyebrow="03 — Design System" title="Styles">
+    <section id="details" aria-labelledby="details-title" className={`${container} py-24 md:py-32`}>
+      <SectionHeading index="03" eyebrow="Details" title="Design System">
         {styles.intro}
       </SectionHeading>
 
-      <div className="mt-16 grid gap-6 lg:grid-cols-2">
-        <div className="reveal">
-          <p className="eyebrow mb-4">Typography</p>
-          <div className="flex flex-col gap-4">
-            <img src={images.type01} alt="Heading typeface: Ninna" loading="lazy" className="w-full rounded-lg" />
-            <img src={images.type02} alt="Body typeface: DM Sans" loading="lazy" className="w-full rounded-lg" />
+      <div className="mt-12 grid gap-3 lg:grid-cols-12">
+        <article className="module reveal flex flex-col gap-5 p-6 lg:col-span-7">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="text-body font-semibold tracking-tight">Typography</span>
+            <div className="flex gap-1.5">
+              <Pill>Ninna · Headings</Pill>
+              <Pill>DM Sans · Body</Pill>
+            </div>
           </div>
-        </div>
-        <div className="reveal flex flex-col">
-          <p className="eyebrow mb-4">Colour</p>
-          <div className="flex flex-1 flex-col gap-4">
+          <img src={images.type01} alt="Heading typeface: Ninna" loading="lazy" className="w-full rounded-xl" />
+          <img src={images.type02} alt="Body typeface: DM Sans" loading="lazy" className="w-full rounded-xl" />
+        </article>
+
+        <article className="module reveal flex flex-col gap-5 p-6 lg:col-span-5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-body font-semibold tracking-tight">Brand colour</span>
+            <Pill>3 swatches</Pill>
+          </div>
+          <div className="flex flex-1 flex-col gap-3">
             {styles.colours.map((c) => (
-              <div
-                key={c.hex}
-                className={`${c.swatch} ${c.text} flex flex-1 items-end justify-between rounded-lg border border-border p-6 min-h-28`}
-              >
-                <span className="display text-2xl">{c.name}</span>
-                <span className="text-sm tracking-[0.2em] uppercase">{c.hex}</span>
+              <div key={c.hex} className="flex flex-1 items-stretch gap-4 rounded-xl border border-border p-2">
+                {/* Client brand colour rendered as content data */}
+                <span
+                  aria-hidden
+                  className="min-h-20 w-24 shrink-0 rounded-lg border border-border"
+                  style={{ backgroundColor: c.hex }}
+                />
+                <div className="flex flex-col justify-center gap-2">
+                  <span className="text-body font-medium">{c.name}</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    <Pill>{c.hex}</Pill>
+                    <Pill>{c.role}</Pill>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-        </div>
+        </article>
       </div>
 
-      <div className="mt-32">
-        <SectionHeading eyebrow="Design System" title="UI Elements">
-          {uiElements.intro}
-        </SectionHeading>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {uiElements.items.map((u) => (
-            <figure
-              key={u.title}
-              className={`reveal flex flex-col gap-4 rounded-lg border border-border bg-card p-6 ${
-                u.wide ? "sm:col-span-2 lg:col-span-2" : ""
-              }`}
-            >
-              <figcaption className="eyebrow">{u.title}</figcaption>
-              <div className="flex flex-1 items-center justify-center">
-                <img src={u.src} alt={u.title} loading="lazy" className="max-w-full" />
-              </div>
-            </figure>
-          ))}
+      <div className="mt-20 grid gap-6 lg:grid-cols-12 lg:items-end">
+        <div className="lg:col-span-6">
+          <GroupHeading label="Components" title="UI elements" />
         </div>
+        <p className="reveal text-muted-foreground lg:col-span-6">{uiElements.intro}</p>
       </div>
-
-      <div className="mt-32">
-        <SectionHeading eyebrow="Design System" title="Grid Structure" />
-        <div className="mt-14 grid items-end gap-6 lg:grid-cols-[3fr_1fr]">
-          <figure className="reveal">
-            <img src={images.gridDesktop} alt="Desktop grid" loading="lazy" className="frame w-full rounded-lg" />
-            <figcaption className="eyebrow mt-4">Desktop</figcaption>
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {uiElements.items.map((u) => (
+          <figure
+            key={u.title}
+            className={`module reveal flex flex-col gap-5 p-6 ${u.wide ? "sm:col-span-2 lg:col-span-4" : ""}`}
+          >
+            <figcaption>
+              <Pill>{u.title}</Pill>
+            </figcaption>
+            <div className="flex flex-1 items-center justify-center rounded-xl bg-background p-4">
+              <img src={u.src} alt={u.title} loading="lazy" className="max-w-full" />
+            </div>
           </figure>
-          <figure className="reveal">
-            <img src={images.gridMobile} alt="Mobile grid" loading="lazy" className="frame mx-auto w-full max-w-xs rounded-lg" />
-            <figcaption className="eyebrow mt-4">Mobile</figcaption>
+        ))}
+      </div>
+
+      <div className="mt-20">
+        <GroupHeading label="Layout" title="Grid structure" />
+        <div className="mt-8 grid gap-3 lg:grid-cols-12">
+          <figure className="module reveal flex flex-col gap-5 p-6 lg:col-span-9">
+            <figcaption className="flex gap-1.5">
+              <Pill>Desktop</Pill>
+            </figcaption>
+            <img src={images.gridDesktop} alt="Desktop grid" loading="lazy" className="w-full rounded-xl" />
+          </figure>
+          <figure className="module reveal flex flex-col gap-5 p-6 lg:col-span-3">
+            <figcaption className="flex gap-1.5">
+              <Pill>Mobile</Pill>
+            </figcaption>
+            <img
+              src={images.gridMobile}
+              alt="Mobile grid"
+              loading="lazy"
+              className="mx-auto w-full max-w-xs rounded-xl"
+            />
           </figure>
         </div>
       </div>
@@ -324,52 +425,53 @@ function DesignSystem() {
   );
 }
 
+/* --------------------------------------------------------- Visual design */
+
 function VisualDesign() {
   return (
-    <section id="visual" className="bg-ink py-28 text-ink-foreground md:py-36">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <div className="reveal flex flex-col items-center gap-5 text-center">
-          <p className="eyebrow text-gold">04 — UI Design</p>
-          <h2 className="display text-5xl uppercase md:text-7xl">Visual Design</h2>
-          <span className="gold-rule" />
+    <section aria-labelledby="visual-title" className="bg-inverse py-24 text-inverse-foreground md:py-32">
+      <div className={container}>
+        <SectionHeading inverse eyebrow="Visual design" title="Key screens">
+          Five core templates designed and built for the new store, from first impression to checkout.
+        </SectionHeading>
+        <div className="module-inverse reveal mt-12 overflow-hidden p-2">
+          <img
+            src={images.home}
+            alt="The Lirio shop page on desktop and mobile, with a product card detail"
+            loading="lazy"
+            className="w-full rounded-xl"
+          />
         </div>
-        <img
-          src={images.home}
-          alt="The Lirio shop page on desktop and mobile, with a product card detail"
-          loading="lazy"
-          className="reveal mx-auto mt-16 w-full max-w-5xl rounded-lg"
-        />
       </div>
 
-      <div className="mx-auto mt-24 flex max-w-7xl flex-col gap-28 px-6 md:px-10">
+      <div className={`${container} mt-16 flex flex-col gap-3`}>
         {screens.map((s, i) => (
-          <article
-            key={s.title}
-            className="grid items-start gap-10 lg:grid-cols-12 lg:gap-16"
-          >
+          <article key={s.title} className="grid items-start gap-3 lg:grid-cols-12">
             <div
-              className={`reveal flex flex-col gap-5 lg:sticky lg:top-28 lg:col-span-4 ${
+              className={`module-inverse reveal flex flex-col gap-5 p-7 lg:sticky lg:top-24 lg:col-span-4 ${
                 i % 2 === 1 ? "lg:order-2" : ""
               }`}
             >
-              <span className="display text-5xl text-gold">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="display text-4xl uppercase">{s.title}</h3>
+              <div className="flex items-center gap-2">
+                <Pill variant="accent">{String(i + 1).padStart(2, "0")}</Pill>
+                <Pill variant="inverse">Template</Pill>
+              </div>
+              <h3 className="headline text-subheading">{s.title}</h3>
               {s.body.map((b) => (
-                <p key={b} className="leading-relaxed opacity-75">
+                <p key={b} className="text-caption text-inverse-muted">
                   {b}
                 </p>
               ))}
               {s.features.length ? (
-                <div className="mt-2">
-                  <p className="eyebrow mb-3 text-gold">Key Features</p>
-                  <ul className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2.5 border-t border-inverse-border pt-5">
+                  <span className="eyebrow text-inverse-muted">Key features</span>
+                  <div className="flex flex-wrap gap-1.5">
                     {s.features.map((f) => (
-                      <li key={f} className="flex items-center gap-3 text-sm">
-                        <span className="size-1.5 rotate-45 bg-gold" />
+                      <Pill key={f} variant="inverse" dot>
                         {f}
-                      </li>
+                      </Pill>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -383,27 +485,81 @@ function VisualDesign() {
   );
 }
 
-function Closing() {
+/* --------------------------------------------------------------- Results */
+
+function Results() {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-28 text-center md:px-10 md:py-36">
-      <div className="reveal flex flex-col items-center gap-8">
-        <img src={images.logo} alt="" aria-hidden className="size-16" />
-        <p className="display max-w-3xl text-3xl leading-snug md:text-5xl">
-          A streamlined shopping journey that balances aesthetic sophistication with functional clarity.
-        </p>
+    <section id="results" aria-labelledby="results-title" className={`${container} py-24 md:py-32`}>
+      <SectionHeading index="04" eyebrow="Results" title="Outcome">
+        {results.statement}
+      </SectionHeading>
+
+      <div className="mt-12 grid gap-3 lg:grid-cols-12">
+        <article className="module reveal flex flex-col gap-5 p-7 lg:col-span-6">
+          <Pill variant="accent" className="self-start">
+            Delivered
+          </Pill>
+          <ul className="flex flex-col">
+            {results.delivered.map((d) => (
+              <li key={d} className="flex items-center gap-3 border-t border-border py-3.5 first:border-0">
+                <span aria-hidden className="grid size-5 place-items-center rounded-full bg-primary text-caption text-accent">
+                  ✓
+                </span>
+                <span className="text-body">{d}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <figure className="module-placeholder reveal flex flex-col justify-between gap-8 p-7 lg:col-span-6">
+          <Pill className="self-start">Placeholder · Client quote</Pill>
+          <blockquote className="text-subheading font-medium tracking-tight text-muted-foreground">
+            “{results.quote.text}”
+          </blockquote>
+          <figcaption className="text-caption text-muted-foreground">{results.quote.author}</figcaption>
+        </figure>
+
+        {results.metrics.map((m) => (
+          <article key={m.label} className="module-placeholder reveal flex flex-col gap-4 p-7 lg:col-span-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <Pill>Placeholder</Pill>
+              <span className="eyebrow">{m.label}</span>
+            </div>
+            <span className="headline text-heading tabular-nums text-muted-foreground">{m.value}</span>
+            <p className="text-caption text-muted-foreground">{m.note}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="module-inverse reveal mt-3 flex flex-col items-start justify-between gap-8 p-8 text-inverse-foreground md:flex-row md:items-center md:p-12">
+        <div className="flex flex-col gap-3">
+          <Pill variant="inverse" dot className="self-start">
+            Live
+          </Pill>
+          <p className="headline max-w-xl text-subheading">See the finished store in action.</p>
+        </div>
         <a
           href="https://thelirio.com/"
           target="_blank"
           rel="noreferrer"
-          className="mt-4 inline-flex items-center gap-3 bg-primary px-8 py-4 text-xs uppercase tracking-[0.25em] text-primary-foreground transition-colors hover:bg-gold hover:text-ink"
+          className="inline-flex items-center gap-3 rounded-full bg-accent px-6 py-3.5 text-body font-medium text-accent-foreground transition-transform hover:-translate-y-0.5"
         >
-          Visit thelirio.com ↗
+          Visit thelirio.com <span aria-hidden>↗</span>
         </a>
       </div>
-      <footer className="mt-28 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-xs uppercase tracking-[0.22em] text-muted-foreground sm:flex-row">
-        <span>Carly Liczyk — UI/UX &amp; Web Development</span>
-        <a href="#top" className="link-underline">Back to top ↑</a>
-      </footer>
     </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-border">
+      <div className={`${container} flex flex-col items-start justify-between gap-4 py-8 sm:flex-row sm:items-center`}>
+        <span className="text-caption text-muted-foreground">Carly Liczyk — UI/UX Design &amp; Web Development</span>
+        <a href="#top" className="pill">
+          Back to top ↑
+        </a>
+      </div>
+    </footer>
   );
 }
