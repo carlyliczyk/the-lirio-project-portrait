@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { sections } from "@/content/lirio";
 
 export function SectionNav() {
-  const [active, setActive] = useState<string>(sections[0]?.id ?? "");
+  const [active, setActive] = useState<string>("");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -11,7 +11,7 @@ export function SectionNav() {
           if (e.isIntersecting) setActive(e.target.id);
         });
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: "-40% 0px -55% 0px" },
     );
     sections.forEach((s) => {
       const el = document.getElementById(s.id);
@@ -21,23 +21,34 @@ export function SectionNav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-10">
-        <a href="#top" className="display text-lg tracking-[0.2em] uppercase">
-          Carly Liczyk
+    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-5 py-3 md:px-8">
+        <a href="#top" className="flex items-center gap-2.5 font-medium tracking-tight">
+          <span
+            aria-hidden
+            className="grid size-8 place-items-center rounded-lg bg-primary font-mono text-caption text-accent"
+          >
+            CL
+          </span>
+          <span className="text-body">Carly Liczyk</span>
         </a>
-        <nav aria-label="Case study sections" className="hidden gap-8 md:flex">
+        <nav
+          aria-label="Case study sections"
+          className="hidden items-center gap-1 rounded-full border border-border bg-card p-1 md:flex"
+        >
           {sections.map((s) => (
             <a
               key={s.id}
               href={`#${s.id}`}
-              className={`text-xs uppercase tracking-[0.22em] transition-colors ${
-                active === s.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+              data-nav={s.id}
+              aria-current={active === s.id ? "true" : undefined}
+              className={`rounded-full px-4 py-1.5 text-caption transition-colors ${
+                active === s.id
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <span className={active === s.id ? "border-b border-gold pb-1" : "pb-1"}>
-                {s.label}
-              </span>
+              {s.label}
             </a>
           ))}
         </nav>
@@ -45,9 +56,9 @@ export function SectionNav() {
           href="https://thelirio.com/"
           target="_blank"
           rel="noreferrer"
-          className="text-xs uppercase tracking-[0.22em] link-underline"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-caption font-medium text-primary-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
         >
-          Live site ↗
+          Live site <span aria-hidden>↗</span>
         </a>
       </div>
     </header>

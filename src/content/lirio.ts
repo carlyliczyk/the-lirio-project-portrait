@@ -41,12 +41,14 @@ export const project = {
     "The Lirio is a modern jewelry brand focused on minimal, timeless design. Blending everyday wearability with refined craftsmanship, the brand creates elegant pieces using high-quality materials, designed to elevate personal style with subtle luxury.",
   overview:
     "This project focused on redesigning a custom eCommerce website built on WordPress, using the XStore theme and a flexible stack including Elementor, FunnelKit, and Klaviyo. The goal was to elevate the brand through a minimalistic and luxurious visual direction while improving usability and conversion performance. Small, refined details, such as custom icons, product swatches, and thoughtful micro-interactions were introduced to create a polished, high-end user experience. The result is a streamlined shopping journey that balances aesthetic sophistication with functional clarity.",
+  tags: ["Case Study", "eCommerce", "Luxury Jewelry"],
+  stack: ["WordPress", "XStore", "Elementor", "FunnelKit", "Klaviyo"],
   meta: [
     { label: "Client", value: "The Lirio" },
     { label: "Services", value: "UI/UX · Web Development" },
     { label: "Date", value: "2024–2025" },
     { label: "Website", value: "thelirio.com", href: "https://thelirio.com/" },
-  ],
+  ] as const,
   tools: [
     { name: "Figma", icon: figma.url },
     { name: "WordPress", icon: wordpress.url },
@@ -59,34 +61,42 @@ export const project = {
 export const scope = [
   {
     title: "UX Research & Strategy",
+    phase: "Research",
     body: "Conducted user research to identify key needs, behaviors, and friction points. Developed user personas, empathy maps, and journey flows to guide design decisions and ensure alignment with business and user goals.",
   },
   {
     title: "Information Architecture & User Flows",
+    phase: "Architecture",
     body: "Structured the site’s navigation and product hierarchy through card sorting and user flow mapping, creating an intuitive browsing experience that supports product discovery and conversion.",
   },
   {
     title: "Wireframing & Visual Design",
+    phase: "Design",
     body: "Designed low- to high-fidelity wireframes focused on clarity and hierarchy, followed by a refined visual system emphasizing minimalism, luxury aesthetics, and consistent UI elements.",
   },
   {
     title: "Front-End Development",
+    phase: "Build",
     body: "Built a fully responsive interface using Elementor, implementing custom layouts and components while maintaining performance and scalability across devices.",
   },
   {
     title: "WordPress Customization",
+    phase: "Build",
     body: "Extended functionality through a child theme and WordPress hooks, enabling tailored modifications across key templates such as product, archive, and cart pages without compromising core theme integrity.",
   },
   {
     title: "eCommerce Optimization",
+    phase: "Commerce",
     body: "Customized critical eCommerce touchpoints, including product pages (pricing, size selection, charts), archive listings, and cart/checkout flows to improve usability and drive conversions.",
   },
   {
     title: "Marketing & Funnel Integration",
+    phase: "Growth",
     body: "Integrated FunnelKit and Klaviyo to support conversion funnels, email automation, and customer retention strategies, aligning the design with marketing performance goals.",
   },
   {
     title: "Testing & Launch",
+    phase: "QA & Launch",
     body: "Conducted user testing to validate design decisions, iterated based on feedback, and supported a smooth launch with performance and usability optimizations.",
   },
 ];
@@ -186,9 +196,10 @@ export const styles = {
   intro:
     "Inclusive design is at the forefront of The Lirio’s UI/UX. It’s important for the interface to enhance the user’s experience and be accessible to all users, regardless of their abilities, disabilities, or other characteristics.",
   colours: [
-    { name: "Lirio Gold", hex: "#D4AF37", swatch: "bg-gold", text: "text-ink" },
-    { name: "Ivory", hex: "#F6F3EB", swatch: "bg-ivory", text: "text-ink" },
-    { name: "Onyx", hex: "#000000", swatch: "bg-ink", text: "text-ink-foreground" },
+    // Client brand colours, shown as content swatches (not part of this page's palette).
+    { name: "Lirio Gold", hex: "#D4AF37", role: "Primary accent" },
+    { name: "Ivory", hex: "#F6F3EB", role: "Background" },
+    { name: "Onyx", hex: "#000000", role: "Text & UI" },
   ],
 };
 
@@ -250,9 +261,31 @@ export const screens = [
   },
 ];
 
+export const results = {
+  statement:
+    "A streamlined shopping journey that balances aesthetic sophistication with functional clarity.",
+  delivered: [
+    "Intuitive navigation & layout",
+    "Performance-optimized, mobile-first build",
+    "Elevated luxury visual identity",
+    "Conversion-focused product & checkout flows",
+    "Email automation with Klaviyo & FunnelKit",
+  ],
+  // Not supplied yet — clearly labeled placeholders for the author to replace.
+  metrics: [
+    { label: "Conversion rate", value: "+00%", note: "Replace with the measured change in conversion after launch." },
+    { label: "Mobile load time", value: "0.0s", note: "Replace with the before/after page-load time on mobile." },
+    { label: "Cart abandonment", value: "−00%", note: "Replace with the change in abandoned carts after the checkout redesign." },
+  ],
+  quote: {
+    text: "Add a short quote from The Lirio about the redesign and its impact on the business.",
+    author: "Name, Title — The Lirio",
+  },
+};
+
 export const sections = [
   { id: "overview", label: "Overview" },
-  { id: "ux", label: "User Experience" },
-  { id: "system", label: "Design System" },
-  { id: "visual", label: "Visual Design" },
+  { id: "process", label: "Process" },
+  { id: "details", label: "Details" },
+  { id: "results", label: "Results" },
 ];

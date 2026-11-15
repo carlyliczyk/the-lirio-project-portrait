@@ -8,20 +8,60 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system — "The Lirio" case study.
- * Quiet luxury: warm ivory paper, near-black ink, a single gilded accent.
- * Display serif (Bodoni Moda, stand-in for the brand's Ninna) + DM Sans body.
- */
+/* ==========================================================================
+ * Design system — portfolio case study
+ * Technical, modular, monochrome. Black / white / grays + one accent (#E1FE70).
+ * Sans-serif only (Geist + Geist Mono). No serif anywhere, fallbacks included.
+ * ========================================================================== */
+
+/* --------------------------------------------------------------------------
+ * Type scale — Major Third (ratio 1.25), base 1rem.
+ *   step -1  0.800rem   caption
+ *   step  0  1.000rem   body
+ *   step  1  1.250rem   lead
+ *   step  2  1.563rem   subheading
+ *   step  4  2.441rem   heading   (step 3 on small screens)
+ *   step  8  5.960rem   display   (steps 6 / 5 on tablet / mobile)
+ * Every text size on the page comes from these named tokens (text-caption … text-display).
+ * -------------------------------------------------------------------------- */
+@theme {
+  --text-caption: 0.8rem;
+  --text-caption--line-height: 1.4;
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+  --text-lead: 1.25rem;
+  --text-lead--line-height: 1.55;
+  --text-subheading: 1.563rem;
+  --text-subheading--line-height: 1.25;
+  --text-heading: 2.441rem;
+  --text-heading--line-height: 1.08;
+  --text-display: 5.96rem;
+  --text-display--line-height: 0.95;
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --text-display: 3.815rem; /* step 6 */
+  }
+}
+@media (max-width: 639px) {
+  :root {
+    --text-heading: 1.953rem; /* step 3 */
+    --text-display: 3.052rem; /* step 5 */
+  }
+}
 
 @theme inline {
-  --font-display: "Bodoni Moda", "Didot", "Times New Roman", serif;
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  /* Sans-only font stacks */
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-serif: var(--font-sans); /* serif is intentionally disabled */
 
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 2px);
-  --radius-xl: calc(var(--radius) + 6px);
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -44,13 +84,12 @@
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
 
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
-  --color-ivory: var(--ivory);
-  --color-ink: var(--ink);
-  --color-ink-foreground: var(--ink-foreground);
-  --color-paper: var(--paper);
-  --color-hairline: var(--hairline);
+  /* Inverse (black) surfaces */
+  --color-inverse: var(--inverse);
+  --color-inverse-foreground: var(--inverse-foreground);
+  --color-inverse-muted: var(--inverse-muted);
+  --color-inverse-card: var(--inverse-card);
+  --color-inverse-border: var(--inverse-border);
 
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
@@ -68,56 +107,69 @@
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 1rem;
 
-  /* Brand palette */
-  --gold: oklch(0.76 0.13 88);          /* #D4AF37 */
-  --gold-soft: oklch(0.9 0.06 88);
-  --ivory: oklch(0.963 0.011 88);       /* #F6F3EB */
-  --paper: oklch(0.985 0.005 88);
-  --ink: oklch(0.16 0.004 80);
-  --ink-foreground: oklch(0.963 0.011 88);
-  --hairline: oklch(0.86 0.015 85);
+  /* --- Palette: black, white, grays + one accent ----------------------- */
+  --white: oklch(1 0 0);
+  --gray-50: oklch(0.982 0 0);
+  --gray-100: oklch(0.962 0 0);
+  --gray-200: oklch(0.912 0 0);
+  --gray-300: oklch(0.84 0 0);
+  --gray-400: oklch(0.72 0 0);
+  --gray-600: oklch(0.48 0 0); /* 6.6:1 on white — body-safe muted text */
+  --gray-800: oklch(0.3 0 0);
+  --gray-900: oklch(0.2 0 0);
+  --black: oklch(0.13 0 0);
+  --lime: oklch(0.949 0.17 119.4); /* #E1FE70 — the only accent */
 
-  --background: var(--ivory);
-  --foreground: var(--ink);
-  --card: var(--paper);
-  --card-foreground: var(--ink);
-  --popover: var(--paper);
-  --popover-foreground: var(--ink);
-  --primary: var(--ink);
-  --primary-foreground: var(--ivory);
-  --secondary: oklch(0.93 0.014 86);
-  --secondary-foreground: var(--ink);
-  --muted: oklch(0.93 0.014 86);
-  --muted-foreground: oklch(0.47 0.012 80);
-  --accent: var(--gold);
-  --accent-foreground: var(--ink);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: var(--paper);
-  --border: var(--hairline);
-  --input: var(--hairline);
-  --ring: var(--gold);
+  /* --- Semantic tokens -------------------------------------------------- */
+  --background: var(--gray-50);
+  --foreground: var(--black);
+  --card: var(--white);
+  --card-foreground: var(--black);
+  --popover: var(--white);
+  --popover-foreground: var(--black);
+  --primary: var(--black);
+  --primary-foreground: var(--white);
+  --secondary: var(--gray-100);
+  --secondary-foreground: var(--black);
+  --muted: var(--gray-100);
+  --muted-foreground: var(--gray-600);
+  --accent: var(--lime);
+  --accent-foreground: var(--black); /* accent is always paired with black text */
+  --destructive: oklch(0.45 0 0);
+  --destructive-foreground: var(--white);
+  --border: var(--gray-200);
+  --input: var(--gray-200);
+  --ring: var(--lime);
 
-  --chart-1: var(--gold);
-  --chart-2: var(--ink);
-  --chart-3: oklch(0.6 0.01 80);
-  --chart-4: oklch(0.75 0.01 80);
-  --chart-5: oklch(0.85 0.01 80);
-  --sidebar: var(--paper);
-  --sidebar-foreground: var(--ink);
-  --sidebar-primary: var(--ink);
-  --sidebar-primary-foreground: var(--ivory);
-  --sidebar-accent: var(--secondary);
-  --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: var(--hairline);
-  --sidebar-ring: var(--gold);
+  --inverse: var(--black);
+  --inverse-foreground: var(--white);
+  --inverse-muted: var(--gray-400); /* 8:1 on black */
+  --inverse-card: var(--gray-900);
+  --inverse-border: var(--gray-800);
 
-  --gradient-veil: linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--ivory) 92%, transparent) 100%);
-  --shadow-frame: 0 30px 60px -30px color-mix(in oklab, var(--ink) 35%, transparent);
-  --shadow-soft: 0 12px 30px -18px color-mix(in oklab, var(--ink) 30%, transparent);
+  --chart-1: var(--lime);
+  --chart-2: var(--black);
+  --chart-3: var(--gray-600);
+  --chart-4: var(--gray-400);
+  --chart-5: var(--gray-200);
+  --sidebar: var(--white);
+  --sidebar-foreground: var(--black);
+  --sidebar-primary: var(--black);
+  --sidebar-primary-foreground: var(--white);
+  --sidebar-accent: var(--gray-100);
+  --sidebar-accent-foreground: var(--black);
+  --sidebar-border: var(--gray-200);
+  --sidebar-ring: var(--lime);
+
+  --shadow-card: 0 1px 2px color-mix(in oklab, var(--black) 6%, transparent);
+  --shadow-lift: 0 24px 48px -24px color-mix(in oklab, var(--black) 28%, transparent);
 }
 
+/* --------------------------------------------------------------------------
+ * Base
+ * -------------------------------------------------------------------------- */
 @layer base {
   * {
     border-color: var(--color-border);
@@ -125,74 +177,134 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 5.5rem;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
   }
 
   ::selection {
-    background: var(--gold-soft);
-    color: var(--ink);
+    background: var(--lime);
+    color: var(--black);
+  }
+
+  /* Accent focus ring with a black halo so it reads on white and black */
+  :focus-visible {
+    outline: 2px solid var(--lime);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--black);
+    border-radius: 6px;
   }
 }
 
+/* --------------------------------------------------------------------------
+ * Components
+ * -------------------------------------------------------------------------- */
 @layer components {
+  /* Small mono label above headings */
   .eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.28em;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-muted-foreground);
   }
 
-  .display {
-    font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: 0.01em;
-    line-height: 1.02;
+  /* Tight, confident headlines */
+  .headline {
+    font-weight: 600;
+    letter-spacing: -0.035em;
   }
 
-  .gold-rule {
-    display: block;
-    width: 3rem;
-    height: 1px;
-    background: var(--gold);
+  /* Bounded content module */
+  .module {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-card);
   }
 
-  .frame {
-    background: var(--paper);
-    border: 1px solid var(--hairline);
-    box-shadow: var(--shadow-frame);
+  .module-inverse {
+    background: var(--color-inverse-card);
+    border: 1px solid var(--color-inverse-border);
+    border-radius: var(--radius-2xl);
+  }
+
+  /* Dashed module for content the author still needs to supply */
+  .module-placeholder {
+    background: var(--color-card);
+    border: 1px dashed var(--gray-400);
+    border-radius: var(--radius-2xl);
+  }
+
+  /* Pill labels for metadata */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    padding: 0.3rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: var(--color-foreground);
+    white-space: nowrap;
+  }
+  .pill-accent {
+    background: var(--lime);
+    border-color: var(--lime);
+    color: var(--black);
+  }
+  .pill-solid {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+  .pill-inverse {
+    background: transparent;
+    border-color: var(--inverse-border);
+    color: var(--inverse-foreground);
+  }
+  .pill-dot::before {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 9999px;
+    background: var(--lime);
+    box-shadow: 0 0 0 1px var(--black);
   }
 
   .scroll-frame {
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--gold) transparent;
+    scrollbar-color: var(--gray-400) transparent;
   }
 
-  .link-underline {
-    background-image: linear-gradient(var(--gold), var(--gold));
-    background-size: 0% 1px;
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    transition: background-size 0.4s ease;
-  }
-  .link-underline:hover {
-    background-size: 100% 1px;
+  /* Subtle dotted grid used behind the hero */
+  .grid-paper {
+    background-image: radial-gradient(color-mix(in oklab, var(--black) 12%, transparent) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 }
 
+/* --------------------------------------------------------------------------
+ * Motion
+ * -------------------------------------------------------------------------- */
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -201,14 +313,14 @@
 }
 
 .rise-in {
-  animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 @supports (animation-timeline: view()) {
   .reveal {
     animation: rise linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 35%;
+    animation-range: entry 0% entry 30%;
   }
 }
 
@@ -216,5 +328,8 @@
   .rise-in,
   .reveal {
     animation: none;
+  }
+  html {
+    scroll-behavior: auto;
   }
 }
