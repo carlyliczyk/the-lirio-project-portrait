@@ -85,7 +85,7 @@ function Hero() {
         </div>
 
         {/* Key facts */}
-        <dl className="rise-in mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="rise-in mt-14 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Fact label={client.label}>
             <span className="text-subheading font-medium tracking-tight">{client.value}</span>
           </Fact>
@@ -132,7 +132,7 @@ function Hero() {
 
 function Fact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="module flex min-h-32 flex-col justify-between gap-6 p-5">
+    <div className="module flex min-h-28 flex-col justify-between gap-4 p-4 sm:min-h-32 sm:gap-6 sm:p-5">
       <dt className="eyebrow">{label}</dt>
       <dd>{children}</dd>
     </div>
@@ -153,6 +153,17 @@ function Overview() {
             <Pill>Redesign</Pill>
           </div>
           <p className="text-lead text-foreground">{project.overview}</p>
+          <div className="mt-auto flex flex-col gap-3 border-t border-border pt-6">
+            <span className="eyebrow">Technologies used</span>
+            <div className="flex flex-wrap gap-2">
+              {project.tools.map((t) => (
+                <Pill key={t.name}>
+                  <img src={t.icon} alt="" aria-hidden className="size-4 object-contain" />
+                  {t.name}
+                </Pill>
+              ))}
+            </div>
+          </div>
         </article>
 
         <aside className="module reveal flex flex-col gap-6 p-7 lg:col-span-4" aria-label="Project at a glance">
@@ -168,14 +179,6 @@ function Overview() {
           <Glance label="Stack">
             {project.stack.map((s) => (
               <Pill key={s}>{s}</Pill>
-            ))}
-          </Glance>
-          <Glance label="Tools">
-            {project.tools.map((t) => (
-              <Pill key={t.name}>
-                <img src={t.icon} alt="" aria-hidden className="size-4 object-contain" />
-                {t.name}
-              </Pill>
             ))}
           </Glance>
         </aside>
@@ -383,11 +386,11 @@ function Details() {
         </div>
         <p className="reveal text-muted-foreground lg:col-span-6">{uiElements.intro}</p>
       </div>
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {uiElements.items.map((u) => (
           <figure
             key={u.title}
-            className={`module reveal flex flex-col gap-5 p-6 ${u.wide ? "sm:col-span-2 lg:col-span-4" : ""}`}
+            className={`module reveal flex flex-col gap-5 p-6 ${u.wide ? "sm:col-span-2 lg:col-span-2" : ""}`}
           >
             <figcaption>
               <Pill>{u.title}</Pill>
